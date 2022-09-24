@@ -1,0 +1,89 @@
+#.gitignore is a file which makes git ignore files which should
+# not go into version control in the first place
+# Questions See
+# httpgit-scm.combookenv2Git-Basics-Recording-Changes-to-the-Repository#Ignoring-Files
+# httpgit-scm.comdocsgitignore
+
+###########################
+# ignore generated binaries
+# but not the data folder
+###########################
+
+bin
+!bindata
+
+#########
+# general
+#########
+
+[Bb]uild
+[Oo]bj
+.o
+[Dd]ebug
+[Rr]elease
+.mode
+.app
+.pyc
+.svn
+.log
+
+########################
+# IDE files which should
+# be ignored
+########################
+
+# XCode
+.pbxuser
+.perspective
+.perspectivev3
+.mode1v3
+.mode2v3
+# XCode 4
+.xccheckout
+xcuserdata
+
+# Visual Studio
+.sdf
+.opensdf
+.suo
+.pdb
+.ilk
+.aps
+ipch
+
+# Eclipse
+.metadata
+local.properties
+.externalToolBuilders
+
+# Android Studio
+.gradle
+local.properties
+.ideaworkspace.xml
+.idealibraries
+
+##################
+# operating system
+##################
+
+# Linux
+~
+# KDE
+.directory
+.AppleDouble
+
+# OSX
+.DS_Store
+.swp
+~.nib
+# Thumbnails
+._
+
+# Windows
+# Image file caches
+Thumbs.db
+# Folder config file
+Desktop.ini
+
+# Android
+.csettings
