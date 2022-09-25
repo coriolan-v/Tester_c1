@@ -28,10 +28,9 @@ void ofApp::setup(){
 	// Add the button
 	gui.add(CycleTest.setup("RGBW Auto Cycle Test (20 seconds)"));
 
-	//gui.add(CycleTestToggle.setup("RGBW Auto Cycle Test", false));
-
-	//gui.add(numberOfPorts.setup("Number of splitter ports with connected rings", 3, 1, 16));
-	//numberOfPorts.addListener(this, &ofApp::updateModel);
+	// Add the slider that allows to choose which splitter port to output the data on. Minimim is 0, which is broadcast
+	gui.add(numberOfPorts.setup("Number of splitter ports with connected rings", 3, 0, 16));
+	numberOfPorts.addListener(this, &ofApp::updatePort);
 	
 	// Add the colorhweel, and the function it sends the selected colors to
 	gui.add(color.set("color", ofColor(255, 0, 0, 255), ofColor(0, 0, 0, 0), ofColor(255, 255, 255, 255)));
@@ -68,34 +67,7 @@ void ofApp::updateModel(ofColor& color) {
 }
 
 
-//--------------------------------------------------------------
-// Function that builds a test RS485 ring with all R,G,B,W colors
-void ofApp::buildRingString(int color) {
 
-	// build the string data: 4 colors, times the number of LEDs per ring (108), times the number of rings daisy chaines
-	for (int i = 0; i < numberOfRingsPairs*numberOfLedsPerRing * 4; i++) {
-
-		// Assuming the color format is RED,GREEN,BLUE,WHITE, a loop doing everything full red, then green, then blue, then white would be:
-		// we start at 5 because the first 5 bytes are for settings, as per Mike's protocol.
-
-		if (color == 1) {
-			i % 4 == 0 ? ring_strig[i + 5] = 0xFF : ring_strig[i + 5] = 0x00;
-		}
-		if (color == 2) {
-			i % 4 == 1 ? ring_strig[i + 5] = 0xFF : ring_strig[i + 5] = 0x00;
-		}
-		if (color == 3) {
-			i % 4 == 2 ? ring_strig[i + 5] = 0xFF : ring_strig[i + 5] = 0x00;
-		}
-		if (color == 4) {
-			i % 4 == 3 ? ring_strig[i + 5] = 0xFF : ring_strig[i + 5] = 0x00;
-		}
-	}
-	
-	//debug only
-	udpConnection.Send(ring_strig, sizeof(ring_strig));
-
-}
 
 #define udp_incipit 0x02 // defined by WWL
 #define udp_format 0x00 // DMX style with initial break
@@ -122,33 +94,69 @@ void ofApp::sendUDPString() {
 void ofApp::testAllLEDs() {
 	// Simple routine that turns all LEDs red, then green, then blue, then white, wait a few seconds for a person to inspect each board.
 	// This will allow to check that all drivers & LEDs are correctly soldered.
+
+	std::cout << "Testing all RED " << endl;
 	buildRingString(1);
 	sendUDPString();
 	ofSleepMillis(5000);
 
+	std::cout << "Testing all GREEN " << endl;
 	buildRingString(2);
 	sendUDPString();
 	ofSleepMillis(5000);
 
+	std::cout << "Testing all BLUE " << endl;
 	buildRingString(3);
 	sendUDPString();
 	ofSleepMillis(5000);
 
+	std::cout << "Testing all WHITE " << endl;
 	buildRingString(4);
 	sendUDPString();
 	ofSleepMillis(5000);
 }
 
-
 //--------------------------------------------------------------
-void ofApp::chooseColor() {
+// Function that builds a test RS485 ring with all R,G,B,W colors
+void ofApp::buildRingString(int color) {
 
+	// Make sure we send data to all ports, in case this has been modified by using the slider
+	udp_strig[3] = 0x00;
+
+	// build the string data: 4 colors, times the number of LEDs per ring (108), times the number of rings daisy chaines
+	for (int i = 0; i < numberOfRingsPairs*numberOfLedsPerRing * 4; i++) {
+
+		// Assuming the color format is RED,GREEN,BLUE,WHITE, a loop doing everything full red, then green, then blue, then white would be:
+		// we start at 5 because the first 5 bytes are for settings, as per Mike's protocol.
+
+		if (color == 1) {
+			i % 4 == 0 ? ring_strig[i + 5] = 0xFF : ring_strig[i + 5] = 0x00;
+		}
+		if (color == 2) {
+			i % 4 == 1 ? ring_strig[i + 5] = 0xFF : ring_strig[i + 5] = 0x00;
+		}
+		if (color == 3) {
+			i % 4 == 2 ? ring_strig[i + 5] = 0xFF : ring_strig[i + 5] = 0x00;
+		}
+		if (color == 4) {
+			i % 4 == 3 ? ring_strig[i + 5] = 0xFF : ring_strig[i + 5] = 0x00;
+		}
+	}
+
+	//debug only
+	udpConnection.Send(ring_strig, sizeof(ring_strig));
 }
 
-//--------------------------------------------------------------
-void ofApp::chooseRings() {
 
+//--------------------------------------------------------------
+// Update the port parameter, from 0 to 16, in case the user wants to send data to a specific port of the splitter. 0 is broadcast.
+// Then when a color is chosen, the 
+void ofApp::updatePort(int &circleResolution) {
+
+	std::cout << "Sending to ports: " << circleResolution << endl;
+	udp_strig[3] = circleResolution;
 }
+
 
 //--------------------------------------------------------------
 void ofApp::update(){
@@ -157,19 +165,12 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	//ofDrawCircle(ofGetWidth() / 2, ofGetHeight() / 2, radius);
+	
 	gui.draw();
 
 	if (CycleTest) {
 		std::cout << "Button Pressed, triggering RGBW test now. Duration 15 seconds" << endl;
 		testAllLEDs();
-	}
-
-	if (CycleTestToggle) {
-		//std::cout << "Toggled ON" << endl;
-	}
-	else {
-	//	std::cout << "Toggled OFF" << endl;
 	}
 }
 
@@ -180,30 +181,6 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
-	////idByte = 
-
-	//char ring_strig[20] = { 0x00, globalBri, globalBri, smoothing, idByte_test};
-
-	//// All RED: 0xFF every 4 bytes
-	//for (int i = 0; i < 10; i++) {
-	//	
-	//	ring_strig[i + 5] = 0xFF;
-
-	//	/*if (i % 4 == 0) {
-	//		ring_strig[i + 5] = 0xFF;
-	//	}
-	//	else {
-	//		ring_strig[i + 5] = 0x00;
-	//	}*/
-	//}
-
-	////char test_hex[3] = { 0x00, 0x01, 0x02 };
-	////string message = "Key pressed, sending UDP message now";
-	////string message = "00";
-	//udpConnection.Send(ring_strig, sizeof(ring_strig));
-	////udpConnection.Send(message.hex)
-	////udpConnection.Send(message.c_str(), message.length());
 
 }
 

@@ -16,8 +16,7 @@ class ofApp : public ofBaseApp{
 
 		void buildRingString(int color);
 		void sendUDPString();
-		void chooseColor();
-		void chooseRings();
+		void updatePort(int &circleResolution);
 
 		void keyPressed(int key);
 		void keyReleased(int key);
