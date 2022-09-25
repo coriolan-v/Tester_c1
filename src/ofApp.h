@@ -38,10 +38,12 @@ class ofApp : public ofBaseApp{
 	// Setup UDP COMM
 	ofxUDPManager udpConnection;
 
-	//ofxFloatSlider radius;
+	
 	ofxPanel gui;
-	//ofxColorSlider color;
-	//ofxVec2Slider center;
-	//ofxIntSlider circleResolution;
+
+	ofxButton CycleTest;
+	ofxToggle CycleTestToggle;
+	ofxIntSlider numberOfPorts;
+	
 		
 };
