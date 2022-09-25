@@ -8,6 +8,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openframeworksLib", "..\..\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "guiExample", "..\..\..\examples\gui\guiExample\guiExample.vcxproj", "{FF6A2FBD-F9A0-4635-9E6C-CB2124598FA3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "networkUdpSenderExample", "..\..\..\examples\communication\networkUdpSenderExample\networkUdpSenderExample.vcxproj", "{BC30F202-3F8C-46A1-BF69-1FC2C7AC886C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -40,6 +42,14 @@ Global
 		{FF6A2FBD-F9A0-4635-9E6C-CB2124598FA3}.Release|Win32.Build.0 = Release|Win32
 		{FF6A2FBD-F9A0-4635-9E6C-CB2124598FA3}.Release|x64.ActiveCfg = Release|x64
 		{FF6A2FBD-F9A0-4635-9E6C-CB2124598FA3}.Release|x64.Build.0 = Release|x64
+		{BC30F202-3F8C-46A1-BF69-1FC2C7AC886C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BC30F202-3F8C-46A1-BF69-1FC2C7AC886C}.Debug|Win32.Build.0 = Debug|Win32
+		{BC30F202-3F8C-46A1-BF69-1FC2C7AC886C}.Debug|x64.ActiveCfg = Debug|x64
+		{BC30F202-3F8C-46A1-BF69-1FC2C7AC886C}.Debug|x64.Build.0 = Debug|x64
+		{BC30F202-3F8C-46A1-BF69-1FC2C7AC886C}.Release|Win32.ActiveCfg = Release|Win32
+		{BC30F202-3F8C-46A1-BF69-1FC2C7AC886C}.Release|Win32.Build.0 = Release|Win32
+		{BC30F202-3F8C-46A1-BF69-1FC2C7AC886C}.Release|x64.ActiveCfg = Release|x64
+		{BC30F202-3F8C-46A1-BF69-1FC2C7AC886C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

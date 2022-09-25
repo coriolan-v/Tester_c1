@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxNetwork.h"
+#include "ofxGui.h"
 
 
 class ofApp : public ofBaseApp{
@@ -15,6 +16,8 @@ class ofApp : public ofBaseApp{
 
 		void buildRingString(int color);
 		void sendUDPString();
+		void chooseColor();
+		void chooseRings();
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -28,7 +31,17 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
+	ofParameter<ofColor> color;
+	void updateModel(ofColor&);
+	ofEventListener colorListener;
+
 	// Setup UDP COMM
 	ofxUDPManager udpConnection;
+
+	//ofxFloatSlider radius;
+	ofxPanel gui;
+	//ofxColorSlider color;
+	//ofxVec2Slider center;
+	//ofxIntSlider circleResolution;
 		
 };
